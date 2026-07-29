@@ -1,25 +1,18 @@
-<<<<<<< HEAD
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
 
 # Virtual environment
 .venv/
-
+__pycache__
 # Project folders
 models/
 output/
 sample/
 samples/
 logs/
-tests/
 input/
 
 # Temporary files
 temp/
-*.log
+
 
 # OS / Editor
 .vscode/
