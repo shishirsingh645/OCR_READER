@@ -41,7 +41,7 @@ MODEL_ID = "baidu/Unlimited-OCR"
 # Device
 # ==========================================================
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 # ==========================================================

@@ -16,7 +16,8 @@ import shutil
 import fitz
 
 import config
-
+from logger import get_logger
+logger = get_logger(__name__)
 
 # ==========================================================
 # Validate PDF
@@ -37,7 +38,7 @@ def validate_pdf(pdf_path: str | Path) -> Path:
 
     if pdf_path.suffix.lower() != ".pdf":
         raise ValueError("Input file must be a PDF.")
-
+    logger.info("Validated PDF : %s", pdf_path)
     return pdf_path
 
 
@@ -84,7 +85,7 @@ def get_pdf_info(pdf_path: str | Path) -> dict:
 # Convert PDF to Images
 # ==========================================================
 
-def pdf_to_images(pdf_path: str | Path) -> list[Path]:
+def pdf_to_images(pdf_path: str | Path,output_dir: Path | None = None,) -> list[Path]:
     """
     Convert every page into a PNG.
 
@@ -96,7 +97,7 @@ def pdf_to_images(pdf_path: str | Path) -> list[Path]:
 
     temp_dir = config.TEMP_DIR
 
-    temp_dir.mkdir(exist_ok=True)
+    temp_dir.mkdir(parents=True,exist_ok=True,)
 
     image_paths = []
 
@@ -113,9 +114,10 @@ def pdf_to_images(pdf_path: str | Path) -> list[Path]:
             pix = page.get_pixmap(matrix=matrix)
 
             pix.save(image_path)
+            logger.info("Created image : %s",image_path.name,)
 
             image_paths.append(image_path)
-
+            logger.info("Converted %d pages to images.",len(image_paths),)
     return image_paths
 
 
@@ -123,12 +125,38 @@ def pdf_to_images(pdf_path: str | Path) -> list[Path]:
 # Cleanup
 # ==========================================================
 
-def cleanup_temp():
+def cleanup_temp(
+    temp_dir: Path | None = None,
+):
     """
     Delete temporary images.
     """
 
-    if config.TEMP_DIR.exists():
-        shutil.rmtree(config.TEMP_DIR)
+    temp_dir = temp_dir or config.TEMP_DIR
 
-    config.TEMP_DIR.mkdir(exist_ok=True)
+    if temp_dir.exists():
+
+        shutil.rmtree(temp_dir)
+
+        logger.info("Deleted temporary directory : %s",temp_dir,)
+
+    temp_dir.mkdir(parents=True,exist_ok=True,)
+
+    def create_temp_directory(timestamp: str,) -> Path:
+        """
+        Create a temporary folder for the current run.
+        """
+
+        temp_dir = config.TEMP_DIR / timestamp
+
+        temp_dir.mkdir(parents=True,exist_ok=True,)
+
+        logger.info("Created temporary directory : %s",temp_dir,)
+
+        return temp_dir
+    def pdf_name(pdf_path: str | Path,) -> str:
+        """
+        Return PDF filename without extension.
+        """
+
+        return Path(pdf_path).stem

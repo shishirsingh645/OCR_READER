@@ -4,7 +4,7 @@ torchvision
 torchaudio
 
 # Hugging Face
-transformers>=4.56.0
+transformers>=4.56.2
 accelerate>=1.10.0
 huggingface_hub>=0.34.0
 safetensors>=0.6.0
@@ -20,6 +20,8 @@ tqdm>=4.67.0
 requests>=2.32.0
 addict
 matplotlib
+einops
+easydict
 
 # Configuration
 PyYAML>=6.0
