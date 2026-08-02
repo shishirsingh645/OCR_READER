@@ -19,9 +19,7 @@ import config
 from logger import get_logger
 logger = get_logger(__name__)
 
-# ==========================================================
-# Validate PDF
-# ==========================================================
+# Validate PDF This function will validate the pdf file and check if it exists and is a valid pdf file. It will return the path of the pdf file if it is valid, otherwise it will raise an error.
 
 def validate_pdf(pdf_path: str | Path) -> Path:
     """
@@ -41,10 +39,7 @@ def validate_pdf(pdf_path: str | Path) -> Path:
     logger.info("Validated PDF : %s", pdf_path)
     return pdf_path
 
-
-# ==========================================================
-# Page Count
-# ==========================================================
+# Page Count This function will count the number of pages in the pdf file and return it as an integer value
 
 def get_page_count(pdf_path: str | Path) -> int:
     """
@@ -57,9 +52,9 @@ def get_page_count(pdf_path: str | Path) -> int:
         return len(doc)
 
 
-# ==========================================================
-# PDF Information
-# ==========================================================
+
+# PDF Information 
+
 
 def get_pdf_info(pdf_path: str | Path) -> dict:
     """
@@ -81,9 +76,11 @@ def get_pdf_info(pdf_path: str | Path) -> dict:
         }
 
 
-# ==========================================================
-# Convert PDF to Images
-# ==========================================================
+
+#Convert PDF to Images It will conver the pdf to iamges and return a list of image paths 
+#You can specify the output directory where the images will be saved. If no output directory is provided, it will use a temporary directory defined in the config.
+#Also can specify the DPI (dots per inch) for the image conversion. The default DPI is set in the config file.
+
 
 def pdf_to_images(pdf_path: str | Path,output_dir: Path | None = None,) -> list[Path]:
     """
@@ -121,9 +118,9 @@ def pdf_to_images(pdf_path: str | Path,output_dir: Path | None = None,) -> list[
     return image_paths
 
 
-# ==========================================================
-# Cleanup
-# ==========================================================
+
+# Cleanup This function will delete the temporary images created during the pdf to image conversion process. It will also create a new temporary directory for the next run. You can specify a custom temporary directory, otherwise it will use the default one defined in the config.
+
 
 def cleanup_temp(
     temp_dir: Path | None = None,
